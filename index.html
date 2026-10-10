@@ -461,7 +461,7 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding-bottom:3rem
 
   /* ---------- Destinos ---------- */
   const marcados=leer('destinos')||[];
-  ['San Andrés','Cartagena','Guatapé','Eje Cafetero otra vez','Santa Marta otra vez','Punta Cana','México','Una noche en la playa bajo las estrellas'].forEach(d=>{
+  ['San Andrés','Capurgana','Guatapé','Eje Cafetero otra vez','Santa Marta otra vez','Punta Cana','México','Una noche en la playa bajo las estrellas'].forEach(d=>{
     const b=document.createElement('button');
     b.className='destino'; b.setAttribute('aria-pressed',marcados.includes(d));
     b.innerHTML=`<i>✓</i>${d}`;
