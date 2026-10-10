@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Tengo algo especial para ti. Ábrelo con calma.">
+<meta property="og:title" content="Para mi niña ❤">
+<meta property="og:description" content="Tengo algo especial para ti. Ábrelo con calma.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#1b0f14">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23e9a2a8' d='M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z'/%3E%3C/svg%3E">
+<title>Para mi niña</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Pinyon+Script&family=Karla:wght@400;500;600&display=swap">
+<style>
+/* Layout: una sola columna tipo carta nocturna; fotos en polaroid, canción, cartas "abre cuando", futuro, cupones, carta y pregunta final */
+:root{
+  --bg:#1b0f14; --surface:#28171e; --surface-2:#341f28;
+  --fg:#f6e9e4; --muted:#c7aaad; --rose:#e9a2a8; --gold:#dcb66e; --paper:#fbf4ee; --ink:#3a2229; --wine:#8e2f3e;
+  --display:"Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --script:"Pinyon Script", "Snell Roundhand", "Segoe Script", cursive;
+  --body:Karla, "Helvetica Neue", Arial, sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+img{max-width:100%;height:auto}
+[hidden]{display:none!important}
+.portada-grid>*,.polaroids>*,.cancion>*{min-width:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font:400 1.0625rem/1.65 var(--body);overflow-x:hidden}
+.wrap{max-width:62rem;margin:0 auto;padding-inline:1.25rem}
+h1,h2,h3{font-family:var(--display);font-weight:500;text-wrap:balance;margin:0;line-height:1.05}
+p{margin:0}
+.script{font-family:var(--script);color:var(--rose);font-weight:400}
+.eyebrow{font:600 .75rem/1 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:4px}
+
+/* Sobre de entrada */
+#sobre{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:1.5rem;
+  background:radial-gradient(120% 80% at 50% 30%, #3a1d29 0%, var(--bg) 70%);transition:opacity .9s ease, visibility .9s}
+#sobre.abierto{opacity:0;visibility:hidden}
+.sobre-card{text-align:center;display:grid;gap:1.1rem;justify-items:center;max-width:24rem}
+.sello{width:4.5rem;height:4.5rem;border-radius:50%;display:grid;place-items:center;background:var(--wine);
+  box-shadow:inset 0 0 0 4px #a8404f, 0 8px 30px #0008;animation:latido 1.6s ease-in-out infinite}
+.sello svg{width:2rem;height:2rem;fill:var(--paper)}
+.sobre-card .script{font-size:clamp(3rem,13vw,4.5rem);line-height:1}
+.sobre-card p{color:var(--muted)}
+.btn{border:0;border-radius:999px;padding:.85rem 1.8rem;background:var(--rose);color:#2b1218;font-weight:600;letter-spacing:.02em;
+  box-shadow:0 6px 24px #e9a2a833;transition:transform .2s;text-decoration:none;display:inline-block}
+.btn:hover{transform:translateY(-2px)}
+.btn.sec{background:transparent;color:var(--fg);box-shadow:inset 0 0 0 1px #ffffff40}
+.btn.chico{padding:.6rem 1.2rem;font-size:.9rem}
+@keyframes latido{0%,100%{transform:scale(1)}15%{transform:scale(1.08)}30%{transform:scale(1)}45%{transform:scale(1.06)}}
+
+/* Botón de música */
+#musica{position:fixed;right:1rem;bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:40;width:3.2rem;height:3.2rem;border-radius:50%;
+  border:0;background:var(--surface-2);color:var(--gold);display:grid;place-items:center;box-shadow:0 6px 20px #0009}
+#musica svg{width:1.3rem;height:1.3rem;fill:currentColor}
+#musica.sonando{animation:girar 6s linear infinite}
+@keyframes girar{to{transform:rotate(360deg)}}
+
+/* Portada */
+.portada{padding-block:3rem 2rem}
+.portada-grid{display:grid;gap:2rem;align-items:center;grid-template-columns:1.1fr 1fr}
+.portada h1{font-size:clamp(3rem,9vw,6rem);font-style:italic}
+.portada h1 .script{display:block;font-size:.62em;font-style:normal;margin-bottom:.2em}
+.portada .lead{font-family:var(--display);font-size:1.45rem;color:var(--muted);margin-top:1rem;max-width:30ch}
+.maquina{font-family:var(--display);font-style:italic;font-size:1.3rem;color:var(--rose);margin-top:1.4rem;min-height:3.6em;max-width:32ch}
+.maquina::after{content:"|";animation:parpadeo 1s steps(1) infinite;color:var(--gold)}
+@keyframes parpadeo{50%{opacity:0}}
+.portada-foto{position:relative;margin:0}
+.portada-foto img{border-radius:.4rem;transform:rotate(2deg);box-shadow:0 20px 50px #000a;border:10px solid var(--paper);border-bottom-width:46px}
+.portada-foto .pie{position:absolute;bottom:.55rem;left:0;right:0;text-align:center;font-family:var(--script);color:var(--ink);font-size:1.5rem;transform:rotate(2deg)}
+
+/* Capítulos */
+.capitulo{padding-block:4rem 1rem}
+.cap-head{display:grid;gap:.5rem;margin-bottom:2rem;max-width:40rem}
+.cap-head h2{font-size:clamp(2.2rem,6vw,3.4rem)}
+.cap-head p{color:var(--muted)}
+.polaroids{display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:2rem 1.5rem}
+.pola{background:var(--paper);padding:.6rem .6rem 0;border-radius:3px;box-shadow:0 14px 34px #0009;border:0;text-align:center;
+  transition:transform .35s ease;transform:rotate(var(--r,0deg))}
+.pola:hover,.pola:focus-visible{transform:rotate(0) scale(1.03)}
+.pola img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;background:#ddd}
+.pola span{display:block;font-family:var(--script);color:var(--ink);font-size:1.45rem;padding:.35rem .2rem .55rem;line-height:1.2}
+
+/* Nuestra canción */
+.cancion{display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:center;background:var(--surface);border-radius:1.2rem;padding:clamp(1.25rem,4vw,2.2rem);
+  box-shadow:inset 0 0 0 1px #ffffff12}
+.vinilo{width:9rem;height:9rem;border-radius:50%;position:relative;
+  background:repeating-radial-gradient(circle at 50% 50%, #120a0d 0 2px, #1f1217 2px 4px);box-shadow:0 10px 30px #000a}
+.vinilo::after{content:"";position:absolute;inset:34%;border-radius:50%;background:radial-gradient(circle,var(--bg) 0 8%,var(--rose) 9% 100%)}
+.vinilo.gira{animation:girar 3s linear infinite}
+.cancion h3{font-size:clamp(2rem,6vw,2.8rem);font-style:italic}
+.cancion .artista{color:var(--gold);font-weight:600;letter-spacing:.04em;margin-top:.2rem}
+.cancion .nota{color:var(--muted);margin-top:.8rem;max-width:46ch}
+.cancion .acciones{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.2rem}
+
+/* Abre cuando */
+.sobres{display:grid;grid-template-columns:repeat(auto-fill,minmax(13.5rem,1fr));gap:1.2rem}
+.sobrecito{border:0;background:var(--paper);color:var(--ink);border-radius:6px;padding:0;position:relative;aspect-ratio:3/2;overflow:hidden;
+  box-shadow:0 12px 28px #0009;transition:transform .3s}
+.sobrecito:hover{transform:translateY(-4px) rotate(-1deg)}
+.sobrecito::before{content:"";position:absolute;left:0;right:0;top:0;height:58%;background:#efe2d8;clip-path:polygon(0 0,100% 0,50% 100%)}
+.sobrecito .sellito{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:2.4rem;height:2.4rem;border-radius:50%;background:var(--wine);
+  display:grid;place-items:center;color:var(--paper);font-size:1rem}
+.sobrecito .para{position:absolute;left:0;right:0;bottom:.8rem;font-family:var(--script);font-size:1.6rem;line-height:1.1;padding-inline:.6rem}
+.sobrecito.leido .sellito{background:var(--gold)}
+
+/* Futuro */
+.futuro{display:grid;gap:0;position:relative;max-width:44rem}
+.futuro::before{content:"";position:absolute;left:.55rem;top:.6rem;bottom:.6rem;width:1px;background:linear-gradient(var(--gold),var(--rose),transparent)}
+.paso{display:grid;grid-template-columns:1.2rem 1fr;gap:1.2rem;padding-bottom:2rem}
+.punto{width:1.15rem;height:1.15rem;border-radius:50%;background:var(--bg);box-shadow:inset 0 0 0 2px var(--gold);margin-top:.35rem;position:relative}
+.punto::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--gold)}
+.paso .cuando{font:600 .75rem/1 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.paso h3{font-size:1.8rem;margin:.35rem 0 .3rem}
+.paso p{color:var(--muted);max-width:52ch}
+.destinos-t{font-family:var(--display);font-size:1.7rem;margin:2.5rem 0 1rem}
+.destinos{display:flex;flex-wrap:wrap;gap:.6rem}
+.destino{border:0;border-radius:999px;padding:.55rem 1rem .55rem .75rem;background:var(--surface-2);color:var(--fg);display:flex;gap:.5rem;align-items:center;
+  box-shadow:inset 0 0 0 1px #ffffff14}
+.destino i{width:1.1rem;height:1.1rem;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--rose);display:inline-grid;place-items:center;font-style:normal;font-size:.7rem;color:#2b1218}
+.destino[aria-pressed="true"]{background:var(--rose);color:#2b1218}
+.destino[aria-pressed="true"] i{background:#2b1218;color:var(--rose);box-shadow:none}
+.destinos-nota{color:var(--muted);font-size:.9rem;margin-top:.8rem}
+
+/* Promesas */
+.promesas{display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:1rem 2rem;counter-reset:p;max-width:52rem}
+.promesas li{list-style:none;display:grid;gap:.45rem;font-family:var(--display);font-size:1.4rem;line-height:1.3;padding-top:1rem;border-top:1px solid #ffffff1c}
+.promesas li::before{counter-increment:p;content:"Te prometo · " counter(p);font:600 .7rem/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.destino{text-align:left}
+.promesas{padding:0;margin:0}
+
+/* Razones */
+.razones{display:grid;grid-template-columns:repeat(auto-fill,minmax(13rem,1fr));gap:1rem}
+.razon{perspective:900px;border:0;background:none;padding:0;height:9.5rem;color:inherit}
+.razon-in{position:relative;width:100%;height:100%;transition:transform .7s;transform-style:preserve-3d}
+.razon.vuelta .razon-in{transform:rotateY(180deg)}
+.cara{position:absolute;inset:0;border-radius:.8rem;display:grid;place-items:center;padding:1rem;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.cara.frente{background:var(--surface);box-shadow:inset 0 0 0 1px #ffffff14}
+.cara.frente b{font-family:var(--display);font-size:2.6rem;color:var(--rose);font-weight:500;line-height:1}
+.cara.frente small{display:block;color:var(--muted);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;margin-top:.4rem}
+.cara.atras{background:var(--rose);color:#2b1218;transform:rotateY(180deg);font-family:var(--display);font-size:1.3rem;line-height:1.25;text-align:center}
+
+/* Cupones */
+.cupones{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:1.2rem}
+.cupon{position:relative;background:var(--paper);color:var(--ink);border-radius:10px;padding:1.2rem 1.2rem 1rem;display:grid;gap:.4rem;
+  -webkit-mask:radial-gradient(circle at 0 50%,#0000 .7rem,#000 .72rem) left/51% 100% no-repeat,radial-gradient(circle at 100% 50%,#0000 .7rem,#000 .72rem) right/51% 100% no-repeat;
+          mask:radial-gradient(circle at 0 50%,#0000 .7rem,#000 .72rem) left/51% 100% no-repeat,radial-gradient(circle at 100% 50%,#0000 .7rem,#000 .72rem) right/51% 100% no-repeat}
+.cupon .vale{font:600 .7rem/1 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--wine)}
+.cupon h3{font-size:1.55rem;line-height:1.1}
+.cupon p{font-size:.92rem;color:#6b4b52}
+.cupon button{justify-self:start;margin-top:.4rem;border:0;border-radius:999px;padding:.45rem 1rem;background:var(--wine);color:var(--paper);font-weight:600;font-size:.85rem}
+.cupon .estampa{position:absolute;right:.9rem;top:.9rem;transform:rotate(-12deg);border:2px solid var(--wine);color:var(--wine);border-radius:6px;
+  padding:.15rem .5rem;font:600 .75rem/1.2 var(--body);letter-spacing:.12em;text-transform:uppercase}
+.cupon.usado button{background:#b9a3a6}
+.cupones-nota{color:var(--muted);margin-top:1rem;font-size:.95rem}
+
+/* Carta */
+.carta{background:var(--paper);color:var(--ink);border-radius:4px;padding:clamp(1.5rem,5vw,3.5rem);max-width:44rem;margin:0 auto;
+  box-shadow:0 30px 60px #000b;transform:rotate(-.6deg);
+  background-image:repeating-linear-gradient(transparent 0 2.05rem,#e6d6cc 2.05rem calc(2.05rem + 1px))}
+.carta p{font-family:var(--display);font-size:1.3rem;line-height:2.05rem;margin-bottom:2.05rem}
+.carta .saludo,.carta .firma{font-family:var(--script);font-size:2.2rem;color:var(--wine);line-height:2.05rem}
+.carta .firma{text-align:right;margin:0}
+
+/* Sorpresa */
+.sorpresa{text-align:center;padding-block:5rem 7rem;display:grid;gap:1.4rem;justify-items:center}
+.sorpresa h2{font-size:clamp(2.2rem,7vw,3.8rem);font-style:italic;max-width:18ch}
+.botones{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;min-height:3.5rem;position:relative}
+#no{position:relative;transition:transform .25s}
+#final{display:grid;gap:.8rem;justify-items:center}
+#final .script{font-size:clamp(3.4rem,14vw,6rem);line-height:1}
+#final p{color:var(--muted);font-family:var(--display);font-size:1.4rem;max-width:30ch}
+
+/* Visores */
+.visor:not([open]){display:none}
+.visor[open]{display:grid}
+.visor{position:fixed;inset:0;z-index:60;background:#0d0609ee;place-items:center;padding:1.2rem;border:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;color:var(--fg)}
+.visor::backdrop{background:#0d0609ee}
+#visor img{max-height:82vh;max-width:100%;border-radius:4px;box-shadow:0 20px 60px #000}
+#visor p{font-family:var(--script);font-size:2rem;color:var(--rose);text-align:center;margin-top:.6rem}
+.carta-mini{background:var(--paper);color:var(--ink);max-width:28rem;width:100%;border-radius:6px;padding:2rem 1.6rem;box-shadow:0 20px 60px #000;transform:rotate(-1deg)}
+.carta-mini .para{font-family:var(--script);font-size:2.1rem;color:var(--wine);line-height:1.1}
+.carta-mini p{font-family:var(--display);font-size:1.3rem;line-height:1.55;margin-top:1rem}
+.carta-mini small{display:block;margin-top:1.4rem;color:#8a6d73;font-size:.8rem}
+
+canvas#corazones{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:45}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding-bottom:3rem}
+
+@media (max-width:44rem){
+  .portada-grid{grid-template-columns:1fr}
+  .portada-foto{max-width:24rem;margin:0 auto}
+  .polaroids{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.4rem 1rem}
+  .pola span{font-size:1.15rem}
+  .razones,.sobres{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .razon{height:10.5rem}
+  .cara.atras{font-size:1.1rem}
+  .cancion{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .cancion .acciones{justify-content:center}
+  .sobrecito .para{font-size:1.25rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+
+</head>
+<body style="margin:0">
+<div id="sobre" role="dialog" aria-label="Sobre de bienvenida">
+  <div class="sobre-card">
+    <div class="sello" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg></div>
+    <span class="script">Para mi niña</span>
+    <p>Hice esto solo para ti. Sube el volumen y ábrelo con calma.</p>
+    <button class="btn" id="abrir">Abrir mi sorpresa</button>
+  </div>
+</div>
+
+<button id="musica" aria-label="Pausar o reproducir la música" title="Música">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18.5a3 3 0 1 1-2-2.83V5l12-2v12.5a3 3 0 1 1-2-2.83V7.1L9 8.43z"/></svg>
+</button>
+
+<main>
+  <header class="portada wrap">
+    <div class="portada-grid">
+      <div>
+        <p class="eyebrow">Agosto · Septiembre · 2026</p>
+        <h1><span class="script">nuestra</span>historia hasta ahora</h1>
+        <p class="lead">Cada foto es un día que quiero repetir, y cada día contigo me da ganas de vivir muchos más.</p>
+        <p class="maquina" id="maquina" aria-live="polite"></p>
+      </div>
+      <figure class="portada-foto">
+        <img src="fotos/f04.jpg" alt="Nosotros en el mirador, con las montañas detrás">
+        <figcaption class="pie">tú, yo y las montañas</figcaption>
+      </figure>
+    </div>
+  </header>
+
+  <section class="capitulo wrap" aria-labelledby="c0">
+    <div class="cap-head">
+      <p class="eyebrow">Dale play mientras lees</p>
+      <h2 id="c0">Nuestra canción</h2>
+    </div>
+    <div class="cancion">
+      <div class="vinilo" id="vinilo" aria-hidden="true"></div>
+      <div>
+        <h3>Darte un Beso</h3>
+        <p class="artista">Prince Royce</p>
+        <p class="nota">Una bachata para la mujer que me roba las ganas de todo lo demás. Ábrela, súbele y sigue bajando.</p>
+        <div class="acciones">
+          <a class="btn chico" href="https://open.spotify.com/search/Darte%20un%20Beso%20Prince%20Royce" target="_blank" rel="noopener">Escuchar en Spotify</a>
+          <a class="btn chico sec" href="https://www.youtube.com/results?search_query=Prince+Royce+Darte+un+Beso" target="_blank" rel="noopener">Ver en YouTube</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="capitulo wrap" aria-labelledby="c1">
+    <div class="cap-head">
+      <p class="eyebrow">22 y 23 de agosto</p>
+      <h2 id="c1">Entre palmas de cera</h2>
+      <p>Un café, unas montañas enormes y tú, que eras lo más bonito del paisaje.</p>
+    </div>
+    <div class="polaroids" data-fotos="01:El primer café|02:Dos capuchinos y tú|03:Mi lugar favorito es a tu lado|05:Hasta las nubes nos miraban|06:Mi reina en la cima|07:Subimos juntos"></div>
+  </section>
+
+  <section class="capitulo wrap" aria-labelledby="c2">
+    <div class="cap-head">
+      <p class="eyebrow">11 al 13 de septiembre</p>
+      <h2 id="c2">Nuestros días</h2>
+      <p>Camisetas iguales, besos robados, atardeceres en la terraza. Los días normales contigo nunca son normales.</p>
+    </div>
+    <div class="polaroids" data-fotos="08:Camisetas iguales|09:Mi payasa favorita|10:Beso robado|11:Esa carita|12:Tú y el atardecer|13:Abrazo de los nuestros|14:Esa sonrisa me tiene loco|15:Quédate así siempre|16:Mi lugar seguro|17:Simplemente tú"></div>
+  </section>
+
+  <section class="capitulo wrap" aria-labelledby="c3">
+    <div class="cap-head">
+      <p class="eyebrow">25 al 27 de septiembre</p>
+      <h2 id="c3">El mar y nosotros</h2>
+      <p>Nuestro primer viaje al mar juntos. Arena, sol, peces y tú brillando más que todo.</p>
+    </div>
+    <div class="polaroids" data-fotos="18:Nuestra silueta|19:Te abrazo y se me olvida todo|20:Bajo el agua contigo|21:Mar, sol y tú|22:En lancha a la aventura|23:Un beso con sabor a mar|24:La mejor vista|25:Noches de colores|26:Contigo hasta el horizonte|27:Mi persona favorita"></div>
+  </section>
+
+  <section class="capitulo wrap" aria-labelledby="c4">
+    <div class="cap-head">
+      <p class="eyebrow">28 al 30 de septiembre</p>
+      <h2 id="c4">Y seguimos sumando</h2>
+      <p>Porque no importa a dónde vayamos, si es contigo ya es un buen plan.</p>
+    </div>
+    <div class="polaroids" data-fotos="28:Tú y yo, siempre|29:Besitos en la mesa|30:Mi complemento|31:Esta carita es mía|32:Orejitas incluidas"></div>
+  </section>
+
+  <section class="capitulo wrap" aria-labelledby="c5">
+    <div class="cap-head">
+      <p class="eyebrow">Toca cada tarjeta</p>
+      <h2 id="c5">Algunas razones por las que te amo</h2>
+      <p>No caben todas, pero aquí van unas cuantas.</p>
+    </div>
+    <div class="razones" id="razones"></div>
+  </section>
+
+  <section class="capitulo wrap" aria-labelledby="c6">
+    <div class="cap-head">
+      <p class="eyebrow">Guárdalas para cuando las necesites</p>
+      <h2 id="c6">Cartas para abrir cuando…</h2>
+      <p>Hay días en que no voy a estar a tu lado. Para esos días te dejo estas.</p>
+    </div>
+    <div class="sobres" id="sobres"></div>
+  </section>
+
+  <section class="capitulo wrap" aria-labelledby="c7">
+    <div class="cap-head">
+      <p class="eyebrow">Lo que viene</p>
+      <h2 id="c7">Nuestro futuro, como lo sueño</h2>
+      <p>Esto apenas empieza. Esto es lo que quiero vivir contigo.</p>
+    </div>
+    <div class="futuro">
+      <div class="paso"><div class="punto"></div><div><p class="cuando">Muy pronto</p><h3>Más viajes, más fotos</h3><p>Volver al mar, conocer lugares nuevos y llenar carpetas enteras de fotos nuestras.</p></div></div>
+      <div class="paso"><div class="punto"></div><div><p class="cuando">Este año</p><h3>Cumplir metas de la mano</h3><p>Apoyarnos en todo lo que nos propongamos. Tus sueños también son míos, y voy a estar ahí aplaudiéndote en cada uno.</p></div></div>
+      <div class="paso"><div class="punto"></div><div><p class="cuando">Algún día</p><h3>Nuestro hogar</h3><p>Un espacio nuestro, con un espejo lleno de fotos como el de siempre, cafés en la mañana, bachata en la cocina y películas en la noche.</p></div></div>
+      <div class="paso"><div class="punto"></div><div><p class="cuando">Más adelante</p><h3>Una familia, una vida juntos</h3><p>Crecer, aprender, equivocarnos y volver a empezar, pero siempre del mismo lado. Construir algo tan bonito que dé orgullo mirarlo.</p></div></div>
+      <div class="paso"><div class="punto"></div><div><p class="cuando">Para siempre</p><h3>Envejecer contigo</h3><p>Y que dentro de muchos años sigamos tomándonos selfies ridículas, bailando nuestra canción y riéndonos igual que hoy.</p></div></div>
+    </div>
+
+    <h3 class="destinos-t">Lugares que quiero conocer contigo</h3>
+    <div class="destinos" id="destinos"></div>
+    <p class="destinos-nota">Marca los que más te emocionen y empezamos por esos.</p>
+  </section>
+
+  <section class="capitulo wrap" aria-labelledby="c8">
+    <div class="cap-head">
+      <p class="eyebrow">Palabra de novio</p>
+      <h2 id="c8">Mis promesas</h2>
+    </div>
+    <ul class="promesas">
+      <li>Escucharte siempre, aunque esté cansado.</li>
+      <li>Hacerte reír, sobre todo en los días difíciles.</li>
+      <li>Elegirte todos los días, no solo los bonitos.</li>
+      <li>Celebrar cada logro tuyo como si fuera mío.</li>
+      <li>Seguir sacándote a bailar bachata, aunque te pise.</li>
+      <li>Cuidar lo nuestro como lo más valioso que tengo.</li>
+    </ul>
+  </section>
+
+  <section class="capitulo wrap" aria-labelledby="c9">
+    <div class="cap-head">
+      <p class="eyebrow">Válidos para siempre</p>
+      <h2 id="c9">Cupones de amor</h2>
+      <p>Cada uno es un regalo que te debo. Cuando quieras usar uno, márcalo y mándame captura por WhatsApp.</p>
+    </div>
+    <div class="cupones" id="cupones"></div>
+  </section>
+
+  <section class="capitulo wrap" aria-labelledby="c10">
+    <div class="cap-head">
+      <p class="eyebrow">Una carta</p>
+      <h2 id="c10">Lo que te quiero decir</h2>
+    </div>
+    <article class="carta">
+      <p class="saludo">Mi niña,</p>
+      <p>Mirando nuestras fotos me di cuenta de algo: en casi todas estás sonriendo, y en todas yo estoy feliz. No es casualidad. Contigo los días se sienten más livianos, los planes más bonitos y el futuro más claro.</p>
+      <p>Gracias por cada café, cada viaje, cada abrazo y cada beso robado. Gracias por elegirme y por dejarme elegirte todos los días.</p>
+      <p>Cuando pienso en el futuro, ya no lo imagino solo. Te imagino a ti en cada plan: en los viajes que nos faltan, en nuestra casa, en las mañanas de domingo y en las noches bailando en la sala.</p>
+      <p>Te prometo seguir cuidándote, haciéndote reír y construyendo contigo todo lo que soñamos. Lo mejor todavía no lo hemos vivido.</p>
+      <p class="firma">Te amo, Brahian</p>
+    </article>
+  </section>
+
+  <section class="sorpresa wrap" aria-labelledby="c11">
+    <p class="eyebrow">Una última pregunta</p>
+    <h2 id="c11">¿Quieres seguir escribiendo esta historia conmigo?</h2>
+    <div class="botones" id="botones">
+      <button class="btn" id="si">Sí, para siempre</button>
+      <button class="btn sec" id="no">No</button>
+    </div>
+    <div id="final" hidden>
+      <span class="script">Te amo</span>
+      <p>Hoy, mañana y en todos los capítulos que nos faltan. Ahora sí, mándame un mensaje que te estoy esperando.</p>
+    </div>
+  </section>
+  <footer>Hecho con todo mi amor, solo para ti</footer>
+</main>
+
+<dialog class="visor" id="visor" aria-label="Foto ampliada"><div><img id="visor-img" alt=""><p id="visor-txt"></p></div></dialog>
+<dialog class="visor" id="lector" aria-label="Carta"><div class="carta-mini"><div class="para" id="lector-para"></div><p id="lector-txt"></p><small>Toca en cualquier parte para cerrar</small></div></dialog>
+<canvas id="corazones" aria-hidden="true"></canvas>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const leer=k=>{try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}};
+  const guardar=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+  function abrirDlg(d){try{d.showModal()}catch(e){d.setAttribute('open','')}}
+  function cerrarDlg(d){try{d.close()}catch(e){d.removeAttribute('open')}}
+
+  /* ---------- Galerías ---------- */
+  const giros=[-3,2,-1.5,3,-2,1.5,-2.5,2.5]; let k=0;
+  document.querySelectorAll('.polaroids').forEach(g=>{
+    g.dataset.fotos.split('|').forEach(item=>{
+      const [n,txt]=item.split(':');
+      const b=document.createElement('button');
+      b.className='pola'; b.style.setProperty('--r',giros[k++%giros.length]+'deg');
+      b.innerHTML=`<img loading="lazy" src="fotos/f${n}.jpg" alt="${txt}"><span>${txt}</span>`;
+      b.addEventListener('click',()=>{ $('visor-img').src=`fotos/f${n}.jpg`; $('visor-img').alt=txt; $('visor-txt').textContent=txt; abrirDlg($('visor')); });
+      g.appendChild(b);
+    });
+  });
+  $('visor').addEventListener('click',()=>cerrarDlg($('visor')));
+  $('lector').addEventListener('click',()=>cerrarDlg($('lector')));
+
+  /* ---------- Máquina de escribir ---------- */
+  const frases=['Eres mi lugar favorito.','Contigo hasta lo simple es especial.','Lo mejor de mis días tiene tu nombre.','Y esto apenas comienza…'];
+  let fi=0, ci=0, borrando=false;
+  const maq=$('maquina');
+  const reducir=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reducir){maq.textContent=frases[0]} else (function escribir(){
+    const f=frases[fi];
+    maq.textContent=f.slice(0,ci);
+    if(!borrando&&ci<f.length){ci++;setTimeout(escribir,70)}
+    else if(!borrando){borrando=true;setTimeout(escribir,2200)}
+    else if(ci>0){ci--;setTimeout(escribir,30)}
+    else{borrando=false;fi=(fi+1)%frases.length;setTimeout(escribir,400)}
+  })();
+
+  /* ---------- Razones ---------- */
+  ['Tu sonrisa, que sale en todas las fotos','Cómo me miras cuando no te das cuenta','Que conviertes cualquier plan en aventura','Tus caritas y tus locuras',
+   'Lo bonito que se siente abrazarte','Que contigo puedo ser yo mismo','Tu forma de cuidarme','Que cada día te elijo otra vez'].forEach((r,i)=>{
+    const b=document.createElement('button');
+    b.className='razon'; b.setAttribute('aria-label','Razón '+(i+1)+': '+r);
+    b.innerHTML=`<div class="razon-in"><div class="cara frente"><div><b>${i+1}</b><small>toca aquí</small></div></div><div class="cara atras">${r}</div></div>`;
+    b.addEventListener('click',()=>b.classList.toggle('vuelta'));
+    $('razones').appendChild(b);
+  });
+
+  /* ---------- Abre cuando ---------- */
+  const cartas=[
+    ['me extrañes','Cierra los ojos y acuérdate del mirador en las montañas, de mi brazo alrededor tuyo. Así de cerca sigo, aunque no me veas. Ahora escríbeme, que yo seguro también te estoy extrañando.'],
+    ['estés triste','Mi niña, los días grises pasan. Tú eres fuerte, valiente y mucho más capaz de lo que crees. Y si hoy no te sientes así, yo lo creo por los dos. Llámame, que para eso estoy.'],
+    ['necesites reír','Acuérdate de las orejitas en la tienda, de tus caras en las selfies y de lo mal que bailo cuando me emociono. Ya, ya te estás riendo, ¿cierto?'],
+    ['dudes de lo nuestro','Mira otra vez todas estas fotos. Nada de eso fue casualidad. Te elegí, te elijo y te voy a seguir eligiendo. Si algo nos pasa, lo hablamos y lo arreglamos juntos, como siempre.'],
+    ['no puedas dormir','Pon nuestra canción bajito e imagina que estoy al lado tuyo, abrazándote. Respira despacio. Mañana te doy los buenos días yo primero.'],
+    ['estés orgullosa de ti','¡Te lo dije! Siempre supe que lo ibas a lograr. Estoy orgulloso de ti, y esto hay que celebrarlo. Tú escoges el plan, yo invito.']
+  ];
+  const leidos=leer('cartasLeidas')||[];
+  cartas.forEach(([para,txt],i)=>{
+    const b=document.createElement('button');
+    b.className='sobrecito'+(leidos.includes(i)?' leido':'');
+    b.innerHTML=`<span class="sellito" aria-hidden="true">♥</span><span class="para">Abre cuando ${para}</span>`;
+    b.addEventListener('click',()=>{
+      $('lector-para').textContent='Para cuando '+para;
+      $('lector-txt').textContent=txt;
+      abrirDlg($('lector'));
+      b.classList.add('leido'); if(!leidos.includes(i)){leidos.push(i);guardar('cartasLeidas',leidos)}
+    });
+    $('sobres').appendChild(b);
+  });
+
+  /* ---------- Destinos ---------- */
+  const marcados=leer('destinos')||[];
+  ['San Andrés','Cartagena','Guatapé','Eje Cafetero otra vez','Santa Marta otra vez','Punta Cana','México','Una noche en la playa bajo las estrellas'].forEach(d=>{
+    const b=document.createElement('button');
+    b.className='destino'; b.setAttribute('aria-pressed',marcados.includes(d));
+    b.innerHTML=`<i>✓</i>${d}`;
+    b.addEventListener('click',()=>{
+      const on=b.getAttribute('aria-pressed')!=='true'; b.setAttribute('aria-pressed',on);
+      const ix=marcados.indexOf(d); if(on&&ix<0)marcados.push(d); if(!on&&ix>=0)marcados.splice(ix,1); guardar('destinos',marcados);
+      if(on) chispa(b);
+    });
+    $('destinos').appendChild(b);
+  });
+
+  /* ---------- Cupones ---------- */
+  const usados=leer('cupones')||[];
+  [['Cena sorpresa','Yo escojo el lugar, tú solo te arreglas y llegas.'],
+   ['Noche de películas','Tú eliges la peli, yo pongo las cobijas y las crispetas.'],
+   ['Abrazo infinito','Válido en cualquier momento, sin límite de tiempo.'],
+   ['Clase de bachata','Tú y yo bailando nuestra canción en la sala.'],
+   ['Un día de consentida','Masajes, antojos y todo lo que quieras.'],
+   ['Escapada juntos','Un viaje a donde tú digas. Empacamos y nos vamos.']].forEach(([t,d],i)=>{
+    const c=document.createElement('div');
+    c.className='cupon'+(usados.includes(i)?' usado':'');
+    c.innerHTML=`<span class="vale">Vale por</span><h3>${t}</h3><p>${d}</p><button type="button">${usados.includes(i)?'Canjeado':'Canjear'}</button>${usados.includes(i)?'<span class="estampa">Canjeado</span>':''}`;
+    c.querySelector('button').addEventListener('click',e=>{
+      if(c.classList.contains('usado')) return;
+      c.classList.add('usado'); e.target.textContent='Canjeado';
+      c.insertAdjacentHTML('beforeend','<span class="estampa">Canjeado</span>');
+      usados.push(i); guardar('cupones',usados); chispa(e.target);
+    });
+    $('cupones').appendChild(c);
+  });
+
+  /* ---------- Música: instrumental original con ritmo de bachata (Web Audio) ---------- */
+  let ctx=null, master=null, sonando=false, timer=null, nextTime=0, step=0, ruido=null, rev, seco, mojado;
+  const BPM=126, semi=60/BPM/4;
+  const mf=m=>440*Math.pow(2,(m-69)/12);
+  const acordes=[[57,60,64],[53,57,60],[48,52,55],[55,59,62]]; // Am F C G
+  const arp=[0,2,1,2,0,2,1,2,0,2,1,2,0,1,2,1];
+  const mel=[
+    [[0,76,3],[3,77,1],[4,76,2],[6,74,2],[8,72,4],[12,71,2],[14,72,2]],
+    [[0,69,4],[4,72,2],[6,77,2],[8,76,6],[14,74,2]],
+    [[0,72,3],[3,74,1],[4,76,4],[8,79,4],[12,76,4]],
+    [[0,74,6],[6,71,2],[8,74,2],[10,76,2],[12,74,4]]
+  ];
+  function crearReverb(){
+    const len=ctx.sampleRate*2.2, buf=ctx.createBuffer(2,len,ctx.sampleRate);
+    for(let c=0;c<2;c++){const d=buf.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);}
+    const cv=ctx.createConvolver(); cv.buffer=buf; return cv;
+  }
+  function salida(g,wet){ g.connect(seco); if(wet){const w=ctx.createGain();w.gain.value=wet;g.connect(w);w.connect(mojado);} }
+  function cuerda(m,t,dur,vol){ // guitarra punteada
+    const o=ctx.createOscillator(), o2=ctx.createOscillator(), f=ctx.createBiquadFilter(), g=ctx.createGain();
+    o.type='sawtooth'; o2.type='triangle'; o.frequency.value=mf(m); o2.frequency.value=mf(m)*1.003;
+    f.type='lowpass'; f.frequency.setValueAtTime(4200,t); f.frequency.exponentialRampToValueAtTime(900,t+.25); f.Q.value=2;
+    o.connect(f); o2.connect(f); f.connect(g);
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+.004); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    salida(g,.6); o.start(t); o2.start(t); o.stop(t+dur+.05); o2.stop(t+dur+.05);
+  }
+  function bajo(m,t){
+    const o=ctx.createOscillator(), g=ctx.createGain(); o.type='sine'; o.frequency.value=mf(m);
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(.22,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+.45);
+    salida(g,0); o.start(t); o.stop(t+.5);
+  }
+  function bongo(t,alto,vol){
+    const o=ctx.createOscillator(), g=ctx.createGain(); const f0=alto?520:330;
+    o.frequency.setValueAtTime(f0,t); o.frequency.exponentialRampToValueAtTime(f0*.7,t+.08);
+    g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.0001,t+.12);
+    o.connect(g); salida(g,.2); o.start(t); o.stop(t+.14);
+  }
+  function guira(t,larga,vol){
+    const s=ctx.createBufferSource(), f=ctx.createBiquadFilter(), g=ctx.createGain();
+    s.buffer=ruido; f.type='highpass'; f.frequency.value=7000; s.connect(f); f.connect(g);
+    const d=larga?.11:.035;
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(vol,t+(larga?.06:.004)); g.gain.exponentialRampToValueAtTime(.0001,t+d+.02);
+    salida(g,0); s.start(t); s.stop(t+d+.05);
+  }
+  function programar(){
+    while(nextTime<ctx.currentTime+.2){
+      const compas=Math.floor(step/16), s=step%16, ac=acordes[compas%4], ciclo=Math.floor(compas/4);
+      cuerda(ac[arp[s]]+12,nextTime,.32,s%4===0?.07:.045);
+      if(s===0||s===6||s===8||s===12) bajo((s===8?ac[2]:ac[0])-24,nextTime);
+      if(s%2===0) bongo(nextTime,(s/2)%2===0,s===14?.18:.1);
+      if(s%2===0) guira(nextTime,s%4===0,s%4===0?.05:.03);
+      if(ciclo%2===1&&s===0){
+        mel[compas%4].forEach(([p,m,l])=>cuerda(m,nextTime+p*semi,l*semi+.35,.09));
+      }
+      nextTime+=semi; step++;
+    }
+  }
+  function iniciarMusica(){
+    try{
+      if(!ctx){
+        ctx=new (window.AudioContext||window.webkitAudioContext)();
+        master=ctx.createGain(); master.gain.value=0; master.connect(ctx.destination);
+        const comp=ctx.createDynamicsCompressor(); master.disconnect(); master.connect(comp); comp.connect(ctx.destination);
+        rev=crearReverb(); seco=ctx.createGain(); mojado=ctx.createGain(); mojado.gain.value=.5;
+        seco.connect(master); mojado.connect(rev); rev.connect(master);
+        ruido=ctx.createBuffer(1,ctx.sampleRate*.3,ctx.sampleRate); const d=ruido.getChannelData(0); for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+        nextTime=ctx.currentTime+.1;
+      }
+      ctx.resume();
+      nextTime=Math.max(nextTime,ctx.currentTime+.05);
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.setValueAtTime(master.gain.value,ctx.currentTime);
+      master.gain.linearRampToValueAtTime(.85,ctx.currentTime+2);
+      if(!timer) timer=setInterval(programar,25);
+      sonando=true; $('musica').classList.add('sonando'); $('vinilo').classList.add('gira');
+    }catch(e){}
+  }
+  function pausarMusica(){
+    if(!ctx) return;
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.setValueAtTime(master.gain.value,ctx.currentTime);
+    master.gain.linearRampToValueAtTime(0,ctx.currentTime+.5);
+    sonando=false; $('musica').classList.remove('sonando'); $('vinilo').classList.remove('gira');
+    setTimeout(()=>{ if(!sonando){ clearInterval(timer); timer=null; ctx.suspend(); } },600);
+  }
+  $('musica').addEventListener('click',()=>{ sonando?pausarMusica():iniciarMusica(); });
+  // Si abre la canción real, pausamos el instrumental para que no se mezclen
+  document.querySelectorAll('.cancion a').forEach(a=>a.addEventListener('click',pausarMusica));
+
+  /* ---------- Corazones ---------- */
+  const cv=$('corazones'), c2=cv.getContext('2d');
+  let parts=[], anim=null;
+  function medir(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio}
+  medir(); addEventListener('resize',medir);
+  function corazon(x,y,s,col,a){
+    c2.save();c2.globalAlpha=a;c2.translate(x,y);c2.scale(s,s);c2.fillStyle=col;c2.beginPath();
+    c2.moveTo(0,.3);c2.bezierCurveTo(0,0,-.5,0,-.5,.3);c2.bezierCurveTo(-.5,.6,0,.8,0,1);
+    c2.bezierCurveTo(0,.8,.5,.6,.5,.3);c2.bezierCurveTo(.5,0,0,0,0,.3);c2.fill();c2.restore();
+  }
+  const colores=['#e9a2a8','#dcb66e','#f6e9e4','#c4505f'];
+  function lanzar(n,x,y,fuerza,tam){
+    if(reducir) return; const d=devicePixelRatio;
+    for(let i=0;i<n;i++) parts.push({x,y,vx:(Math.random()-.5)*fuerza*d,vy:-(Math.random()*fuerza+fuerza*.4)*d,s:(Math.random()*tam+tam*.6)*d,c:colores[i%4],a:1,g:.22*d});
+    if(!anim) anim=requestAnimationFrame(tick);
+  }
+  function lluvia(n){
+    if(reducir) return; const W=cv.width,H=cv.height,d=devicePixelRatio;
+    for(let i=0;i<n;i++) parts.push({x:Math.random()*W,y:-30*d-Math.random()*H*.6,vx:(Math.random()-.5)*1.2*d,vy:(Math.random()*2+1.2)*d,s:(Math.random()*16+10)*d,c:colores[i%4],a:.9,g:0});
+    if(!anim) anim=requestAnimationFrame(tick);
+  }
+  function chispa(el){ const r=el.getBoundingClientRect(); lanzar(14,(r.left+r.width/2)*devicePixelRatio,(r.top+r.height/2)*devicePixelRatio,6,8); }
+  function tick(){
+    c2.clearRect(0,0,cv.width,cv.height);
+    parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;if(p.g)p.a-=.012;corazon(p.x,p.y,p.s,p.c,Math.max(p.a,0))});
+    parts=parts.filter(p=>p.a>0&&p.y<cv.height+60);
+    anim=parts.length?requestAnimationFrame(tick):null;
+    if(!anim) c2.clearRect(0,0,cv.width,cv.height);
+  }
+
+  /* ---------- Abrir sobre ---------- */
+  $('abrir').addEventListener('click',()=>{ $('sobre').classList.add('abierto'); iniciarMusica(); lluvia(40); });
+
+  /* ---------- Pregunta final ---------- */
+  const no=$('no'); const frasesNo=['¿Segura?','Piénsalo bien','No te creo','Ese botón no funciona','Intenta el otro'];
+  let ni=0;
+  function huir(e){ if(e) e.preventDefault(); no.style.transform=`translate(${(Math.random()-.5)*220}px,${(Math.random()-.5)*90}px)`; no.textContent=frasesNo[ni++%frasesNo.length]; }
+  no.addEventListener('mouseenter',huir); no.addEventListener('click',huir);
+  $('si').addEventListener('click',()=>{
+    $('botones').hidden=true; $('final').hidden=false;
+    const W=cv.width,H=cv.height;
+    lanzar(70,W/2,H*.75,10,16);
+    setTimeout(()=>lanzar(40,W*.25,H*.6,8,12),500);
+    setTimeout(()=>lanzar(40,W*.75,H*.6,8,12),900);
+    setTimeout(()=>lluvia(60),1300);
+    if(!sonando) iniciarMusica();
+  });
+})();
+</script>
+</body>
+</html>
